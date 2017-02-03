@@ -2,4 +2,4 @@
 
 require_relative "../lib/strava-cli"
 
-StravaCli::Command.new.run
+StravaCli::Command.new(ARGV).run
