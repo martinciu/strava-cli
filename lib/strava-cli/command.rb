@@ -1,6 +1,6 @@
 module StravaCli
   class Command
-    Error = StandardError
+    Error = Class.new(StandardError)
 
     def initialize(argv = [])
       @argv = argv
@@ -26,12 +26,13 @@ module StravaCli
       @type = argv[1]
       OptionParser.new(argv) do |parser|
         parser.on("-t", "--time TIME", "Date of the activity") do |v|
-          @time = v
+          @time = Chronic.parse(v)
         end
         parser.on("-d", "--duration DURATION", "Duration of the activity") do |v|
-          @duration = v
+          @duration = ChronicDuration.parse(v)
         end
       end.parse!
+      raise Error.new("Invalid options") if duration.nil? || time.nil?
     end
   end
 end
