@@ -5,4 +5,5 @@ require 'optparse'
 require 'chronic'
 require 'chronic_duration'
 
+require_relative 'strava-cli/activity'
 require_relative 'strava-cli/command'

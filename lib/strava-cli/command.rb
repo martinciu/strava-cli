@@ -8,17 +8,19 @@ module StravaCli
 
     def run
       parse(argv)
-      puts "strava-cli"
-      puts "type: #{type}"
-      puts "duration: #{duration}"
-      puts "time: #{time}"
+      activity = StravaCli::Activity.new
+      activity.duration = duration
+      activity.time = time
+      activity.type = type
+      activity.distance = distance
+      puts activity.to_s
     rescue Error => error
       puts error.message
     end
 
     private
     attr_reader :argv
-    attr_reader :type, :time, :duration
+    attr_reader :type, :time, :duration, :distance
 
     def parse(argv)
       command = argv[0]
@@ -28,8 +30,11 @@ module StravaCli
         parser.on("-t", "--time TIME", "Date of the activity") do |v|
           @time = Chronic.parse(v)
         end
-        parser.on("-d", "--duration DURATION", "Duration of the activity") do |v|
+        parser.on("-i", "--duration DURATION", "Duration of the activity") do |v|
           @duration = ChronicDuration.parse(v)
+        end
+        parser.on("-d", "--distance DISTANCE", "Distance of the activity") do |v|
+          @distance = v
         end
       end.parse!
       raise Error.new("Invalid options") if duration.nil? || time.nil?
