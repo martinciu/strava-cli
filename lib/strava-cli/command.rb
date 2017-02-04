@@ -14,6 +14,7 @@ module StravaCli
       activity.type = type
       activity.distance = distance
       puts activity.to_s
+      activity.save
     rescue Error => error
       puts error.message
     end
@@ -28,7 +29,7 @@ module StravaCli
       @type = argv[1]
       OptionParser.new(argv) do |parser|
         parser.on("-t", "--time TIME", "Date of the activity") do |v|
-          @time = Chronic.parse(v)
+          @time = Chronic.parse(v, context: :past)
         end
         parser.on("-i", "--duration DURATION", "Duration of the activity") do |v|
           @duration = ChronicDuration.parse(v)
